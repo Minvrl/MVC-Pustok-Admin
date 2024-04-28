@@ -16,15 +16,9 @@ namespace MVC_Pustok.Controllers
         }
         public IActionResult GetBookById(int id)
         {
-            var bookTags = _context.BookTags.Where(bt => bt.BookId == id).Include(bt => bt.Tag);
 
-            Book book = _context.Books
-                .Include(x => x.Genre)
-                .Include(x => x.BookImages.Where(x => x.PosterStatus == true))
-                .FirstOrDefault(x => x.Id == id);
 
-            book.BookTags = bookTags.ToList(); // Assign the booktags to the book object
-
+            Book book = _context.Books.Include(x => x.Genre).Include(x => x.BookImages.Where(x => x.PosterStatus == true)).FirstOrDefault(x => x.Id == id);
             return PartialView("_BookModalPartial", book);
         }
 
