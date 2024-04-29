@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Humanizer.Localisation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_Pustok.Areas.Admin.ViewModels;
 using MVC_Pustok.Data;
@@ -20,6 +21,21 @@ namespace MVC_Pustok.Areas.Admin.Controllers
             var query = _context.Authors.Include(x => x.Books);
 
             return View(PaginatedList<Author>.Create(query,page,2));
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult Create(Author author)
+        {
+            _context.Authors.Add(author);
+            _context.SaveChanges();
+
+            return RedirectToAction("index");
         }
     }
 }

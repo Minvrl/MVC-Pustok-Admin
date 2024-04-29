@@ -1,4 +1,4 @@
-﻿@model PaginatedList<Author>
+﻿@model PaginatedList<Book>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,7 +10,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Authors</h1>
+        <h1 class="h3 mb-0 text-gray-800">Books</h1>
         <a asp-action="create" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             Create
         </a>
@@ -22,7 +22,9 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Book count</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Price</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -31,8 +33,10 @@
                     {
                         <tr>
                             <th scope="row">@(++order)</th>
-                            <td>@item.Fullname</td>
-                            <td>@item.Books.Count</td>
+                            <td>@item.Name</td>
+                            <td>@item.Author.Fullname</td>
+                            <td>@item.Genre.Name</td>
+                            <td>@item.SalePrice.ToString("0.00")</td>
                             <td>
                                 <a class="btn btn-warning" href="#">Edit</a>
                                 <a class="btn btn-danger" href="#">Delete</a>
