@@ -1,4 +1,7 @@
-﻿namespace MVC_Pustok.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace MVC_Pustok.Models
 {
     public class Slider:BaseEntity
     {
@@ -11,7 +14,8 @@
         public string Image { get; set; }
         public int Order { get; set; }
 
-
+        [NotMapped]
+        public IFormFile? ImageFile { get; set; }
 
     }
 }
