@@ -36,14 +36,14 @@
                             <th scope="row">@(++order)</th>
                             <td>@item.Title1</td>
                             <td>@item.Title2</td>
-                            <td>@item.BtnUrl</td>
                             <td>@item.BtnText</td>
+                            <td>@item.BtnURL</td>
                             <td>
-                                
+                                <img width="140" src="~/uploads/slider/@item.Image" alt="@item.Title1" />
                             </td>
                             <td>
                                 <a class="btn btn-warning" asp-action="edit" asp-route-id="@item.Id">Edit</a>
-                                <a class="btn btn-danger" href="#">Delete</a>
+                                <a class="btn btn-danger delete-btn" asp-action="delete" asp-route-id="@item.Id">Delete</a>
                             </td>
                         </tr>
                     }
@@ -97,3 +97,6 @@
     </div>
 
 </div>
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}

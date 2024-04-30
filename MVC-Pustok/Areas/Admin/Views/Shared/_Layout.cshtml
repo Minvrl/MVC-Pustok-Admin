@@ -71,7 +71,12 @@
                     <span>Books</span>
                 </a>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="slider" asp-action="index">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Sliders</span>
+                </a>
+            </li>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -306,6 +311,7 @@
                 <!-- End of Topbar -->
                 <!-- Main Content -->
                 @RenderBody()
+
                 <!-- End of Main Content -->
             </div>
             <!-- Footer -->
@@ -358,12 +364,9 @@
     <!-- Custom scripts for all pages-->
     <script src="~/admin/assets/js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="~/admin/assets/vendor/chart.js/Chart.min.js"></script>
+    @RenderSection("scripts", required: false)
 
-    <!-- Page level custom scripts -->
-    <script src="~/admin/assets/js/demo/chart-area-demo.js"></script>
-    <script src="~/admin/assets/js/demo/chart-pie-demo.js"></script>
+    <script src="~/admin/assets/js/main.js"></script>
 
 </body>
 

@@ -18,6 +18,8 @@ namespace MVC_Pustok.Models
         public bool StockStatus { get; set; }
         public bool IsNew { get; set; }
         public bool IsFeatured { get; set; }
+        public int GenreId { get; set; }
+        public int AuthorId { get; set; }
         public Genre? Genre { get; set; }
         public Author? Author { get; set; }
         public List<BookImgs> BookImages { get; set; }

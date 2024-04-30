@@ -37,5 +37,44 @@ namespace MVC_Pustok.Areas.Admin.Controllers
 
             return RedirectToAction("index");
         }
+
+        public IActionResult Delete(int id)
+        {
+            Author existAuthor = _context.Authors.Find(id);
+            if (existAuthor == null) return NotFound();
+
+            _context.Authors.Remove(existAuthor);
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+
+        public IActionResult Edit(int id)
+        {
+            Author author= _context.Authors.Find(id);
+
+            if (author == null) return RedirectToAction("NotFound", "Error");
+
+            return View(author);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Author author)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(author);
+            }
+
+            Author existAuthor = _context.Authors.Find(author.Id);
+
+            if (existAuthor == null) return RedirectToAction("NotFound", "Error");
+
+            existAuthor.Fullname = author.Fullname;
+            _context.SaveChanges();
+
+            return RedirectToAction("index");
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿@model Slider
-
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
 <!-- Begin Page Content -->
@@ -9,14 +8,14 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Genres</h1>
+        <h1 class="h3 mb-0 text-gray-800">Sliders</h1>
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            Create
+            Edit
         </a>
     </div>
     <div class="row">
         <div class="col-md-8 mx-auto">
-            <form class="user" asp-action="create" method="post" enctype="multipart/form-data">
+            <form class="user" asp-action="Edit" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title1Input">Title1</label>
                     <input asp-for="Title1" class="form-control" id="title1Input" placeholder=" ">
@@ -43,23 +42,25 @@
                     <span class="text-danger" asp-validation-for="BtnURL"></span>
                 </div>
                 <div class="form-group">
-                    <label for="btnUrlInput">Order</label>
+                    <label for="orderInput">Order</label>
                     <input asp-for="Order" class="form-control" id="Order" placeholder=" ">
                     <span class="text-danger" asp-validation-for="Order"></span>
                 </div>
                 <div class="form-group">
                     <label for="imgInput">Image</label>
                     <input asp-for="ImageFile" class="form-control" id="imgInput" placeholder=" ">
-                    <img width="200" id="previewImg" />
+                    <input type="hidden" name="ImageName" value="@Model.Image" />
+                    <img width="200" id="previewImg" src="~/uploads/slider/@Model.Image" />
                     <span class="text-danger" asp-validation-for="ImageFile"></span>
                 </div>
                 <button class="btn btn-primary" type="submit">
-                    Create Slider
+                    Edit Slider
                 </button>
             </form>
         </div>
     </div>
 </div>
-@section scripts{
-    @Html.Partial("_ValidationScriptsPartial")
-} 
+
+@section scripts {
+    @Html.Partial("_ValidationScriptsPartial");
+}

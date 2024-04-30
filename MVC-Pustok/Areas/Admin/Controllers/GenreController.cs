@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MVC_Pustok.Areas.Admin.Helpers;
 using MVC_Pustok.Areas.Admin.ViewModels;
 using MVC_Pustok.Data;
 using MVC_Pustok.Models;
@@ -47,5 +48,50 @@ namespace MVC_Pustok.Areas.Admin.Controllers
 
             return RedirectToAction("index");
         }
+
+        public IActionResult Edit(int id)
+        {
+            Genre genre = _context.Genres.Find(id);
+
+            if (genre == null) return RedirectToAction("NotFound", "Error");
+
+            return View(genre);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Genre genre)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(genre);
+            }
+
+            Genre existGenre = _context.Genres.Find(genre.Id);
+
+            if (existGenre == null) return RedirectToAction("NotFound", "Error");
+
+            if (_context.Genres.Any(x => x.Name == genre.Name))
+            {
+                ModelState.AddModelError("Name", "Genre already exists!");
+                return View(genre);
+            }
+
+            existGenre.Name = genre.Name;
+            _context.SaveChanges();
+
+            return RedirectToAction("index");
+        }
+
+        public IActionResult Delete(int id)
+        {
+            Genre existGenre = _context.Genres.Find(id);
+            if (existGenre == null) return NotFound();
+
+            _context.Genres.Remove(existGenre);
+            _context.SaveChanges();
+
+            return Ok();
+        }
     }
+
 }
