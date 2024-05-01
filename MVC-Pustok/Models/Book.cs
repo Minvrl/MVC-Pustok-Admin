@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MVC_Pustok.Attributes.ValidationAttributes;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVC_Pustok.Models
@@ -22,7 +23,18 @@ namespace MVC_Pustok.Models
         public int AuthorId { get; set; }
         public Genre? Genre { get; set; }
         public Author? Author { get; set; }
-        public List<BookImgs> BookImages { get; set; }
+        [NotMapped]
+        [MaxfileSize(2 * 1024 * 1024)]
+        [AllowedFileTypes("image/png", "image/jpeg")]
+        public IFormFile? PosterFile { get; set; }
+        [NotMapped]
+        [MaxfileSize(2 * 1024 * 1024)]
+        [AllowedFileTypes("image/png", "image/jpeg")]
+        public List<IFormFile>? ImageFiles { get; set; } = new List<IFormFile>();
+        public List<BookImgs>? BookImages { get; set; } = new List<BookImgs>();
+        public List<Booktags> BookTags { get; set; } = new List<Booktags>();
+        [NotMapped]
+        public List<int>? TagIds { get; set; } = new List<int>();
 
     }
 }

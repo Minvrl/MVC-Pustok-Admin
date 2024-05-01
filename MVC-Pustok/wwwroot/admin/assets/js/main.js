@@ -1,10 +1,22 @@
 ﻿
 $(document).ready(function () {
-    $("#imgInput").change(function (e) {
-        var img = document.getElementById('previewImg');
-        img.src = URL.createObjectURL(e.target.files[0]);
-        img.onload = function () {
-            URL.revokeObjectURL(img.src) 
+    $(".imgInput").change(function (e) {
+        let box = $(this).parent().find(".preview-box");
+        $(box).html("");
+
+        for (var i = 0; i < e.target.files.length; i++) {
+
+            let img = document.createElement("img");
+            img.style.width = "200px";
+            img.classList.add("previewImg");
+
+            let reader = new FileReader();
+            console.log(e.target.nextElementSibling);
+            reader.readAsDataURL(e.target.files[i]);
+            reader.onload = () => {
+                img.setAttribute("src", reader.result);
+                $(box).append(img)
+            }
         }
     })
 
