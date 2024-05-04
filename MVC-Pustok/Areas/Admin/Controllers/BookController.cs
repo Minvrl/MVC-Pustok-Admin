@@ -37,6 +37,15 @@ namespace MVC_Pustok.Areas.Admin.Controllers
             return Ok();
         }
 
+        public IActionResult DeleteImg(int id)
+        {
+            BookImgs existImg = _context.BookImages.Find(id);
+            if (existImg == null) return NotFound();
+
+            FileManager.Delete(_env.WebRootPath, "uploads/slider", existImg.Name);
+            return Ok();
+        }
+
 
         public IActionResult Create()
         {
@@ -74,6 +83,7 @@ namespace MVC_Pustok.Areas.Admin.Controllers
                 Booktags booktags = new Booktags()
                 {
                     TagId = tagId,
+                    Book = book
                 };
                 book.BookTags.Add(booktags);
             }
@@ -85,6 +95,14 @@ namespace MVC_Pustok.Areas.Admin.Controllers
                 PosterStatus = true
             };
             book.BookImages.Add(poster);
+
+            BookImgs hover = new BookImgs() 
+            { 
+                Name= FileManager.Save(book.HoverFile, _env.WebRootPath,"uploads/book"),
+                PosterStatus = false
+            };
+            book.BookImages.Add(hover);
+
 
             foreach (var imgFile in book.ImageFiles)
             {
@@ -100,9 +118,11 @@ namespace MVC_Pustok.Areas.Admin.Controllers
 
             return RedirectToAction("index");
         }
+
+        
         public IActionResult Edit(int id)
         {
-            Book book = _context.Books.Include(x => x.BookTags).Include(x => x.BookImages).FirstOrDefault(x => x.Id == id);
+            Book book = _context.Books.Include(x => x.BookImages).Include(x => x.BookTags).FirstOrDefault(x => x.Id == id);
 
             if (book == null) return RedirectToAction("notfound", "error");
 
@@ -117,7 +137,8 @@ namespace MVC_Pustok.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(Book book)
         {
-            Book? existBook = _context.Books.Find(book.Id);
+
+            Book? existBook = _context.Books.Include(x => x.BookImages).Include(x => x.BookTags).FirstOrDefault(x => x.Id == book.Id);
 
 
             if (existBook == null) return RedirectToAction("notfound", "error");
@@ -127,6 +148,45 @@ namespace MVC_Pustok.Areas.Admin.Controllers
 
             if (book.GenreId != existBook.GenreId && !_context.Genres.Any(x => x.Id == book.GenreId))
                 return RedirectToAction("notfound", "error");
+
+            existBook.BookTags.RemoveAll(x => !book.TagIds.Contains(x.TagId));
+
+            foreach (var tagid in book.TagIds.FindAll(x=> !existBook.BookTags.Any(bt => bt.TagId == x)))
+            {
+                if (!_context.Tags.Any(x => x.Id == tagid)) return RedirectToAction("notfound", "error");
+
+                Booktags booktags = new Booktags()
+                {
+                    TagId = tagid,  
+
+                };
+                existBook.BookTags.Add(booktags);   
+            }
+
+            List<string> removedImgFiles = new List<string>();
+
+            List<BookImgs> removedImgs = existBook.BookImages.FindAll(x=> x.PosterStatus==null & !book.BookImageIds.Contains(x.Id));
+            removedImgFiles = removedImgs.Select(x=> x.Name).ToList();
+            _context.BookImages.RemoveRange(removedImgs);
+
+            if(book.PosterFile != null)
+            {
+                BookImgs poster = existBook.BookImages.FirstOrDefault(x=> x.PosterStatus == true);
+                poster.Name = FileManager.Save(book.PosterFile, _env.WebRootPath, "uploads/book");
+                removedImgFiles.Add(poster.Name);
+            }
+
+            foreach (var imgfile in book.ImageFiles)
+            {
+                BookImgs bookimage = new BookImgs
+                {
+                    Name = FileManager.Save(imgfile, _env.WebRootPath, "uploads/books"),
+                    PosterStatus = null
+                };
+
+                existBook.BookImages.Add(bookimage);
+            }
+
 
             existBook.Name = book.Name;
             existBook.Desc = book.Desc;
@@ -141,8 +201,15 @@ namespace MVC_Pustok.Areas.Admin.Controllers
 
             _context.SaveChanges();
 
+
+            foreach (var fileName in removedImgFiles)
+            {
+                FileManager.Delete(_env.WebRootPath, "uploads/book", fileName);
+            }
+
             return RedirectToAction("index");
         }
+
 
 
 

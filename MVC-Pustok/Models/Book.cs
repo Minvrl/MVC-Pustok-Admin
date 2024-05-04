@@ -30,11 +30,17 @@ namespace MVC_Pustok.Models
         [NotMapped]
         [MaxfileSize(2 * 1024 * 1024)]
         [AllowedFileTypes("image/png", "image/jpeg")]
+        public IFormFile? HoverFile { get; set; }
+        [NotMapped]
+        [MaxfileSize(2 * 1024 * 1024)]
+        [AllowedFileTypes("image/png", "image/jpeg")]
         public List<IFormFile>? ImageFiles { get; set; } = new List<IFormFile>();
         public List<BookImgs>? BookImages { get; set; } = new List<BookImgs>();
         public List<Booktags> BookTags { get; set; } = new List<Booktags>();
         [NotMapped]
         public List<int>? TagIds { get; set; } = new List<int>();
+        [NotMapped]
+        public List<int>? BookImageIds { get; set; } = new List<int>();
 
     }
 }

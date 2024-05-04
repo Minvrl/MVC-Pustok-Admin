@@ -1,8 +1,10 @@
 ﻿
+
 $(document).ready(function () {
     $(".imgInput").change(function (e) {
         let box = $(this).parent().find(".preview-box");
-        $(box).html("");
+        $(box).find(".previewImg").remove();
+
 
         for (var i = 0; i < e.target.files.length; i++) {
 
@@ -20,6 +22,12 @@ $(document).ready(function () {
         }
     })
 
+
+
+    $(".remove-img-icon").click(function () {
+        console.log("bleee")
+        $(this).parent().remove();
+    })
     $(".delete-btn").click(function (e) {
         e.preventDefault();
 

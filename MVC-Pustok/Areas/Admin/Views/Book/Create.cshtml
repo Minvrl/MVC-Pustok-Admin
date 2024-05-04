@@ -101,6 +101,18 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="imgInput">HoverFile</label>
+                            <input asp-for="HoverFile" class="form-control imgInput" placeholder=" ">
+                            <div class="preview-box">
+                                <img width="200" class="previewImg" />
+                            </div>
+                            <span class="text-danger" asp-validation-for="HoverFile"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="imgInput">ImageFiles</label>
                     <input asp-for="ImageFiles" class="form-control imgInput" placeholder=" ">
                     <div class="preview-box">

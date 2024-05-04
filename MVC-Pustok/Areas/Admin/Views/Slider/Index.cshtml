@@ -53,20 +53,21 @@
             </table>
             <nav aria-label="..." class="d-flex justify-content-center">
                 <ul class="pagination">
-                    @if (Model.PageIndex == 1)
-                    {
-                        <li class="page-item disabled">
-                            <span class="page-link">Previous</span>
-                        </li>
-                    }
-                    else
+
+                    @if (Model.PageIndex > 1)
                     {
                         <li class="page-item">
                             <a class="page-link" asp-route-page="@(Model.PageIndex-1)">Previous</a>
                         </li>
                     }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                    }
 
-                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    @for (int i = Math.Max(1, Model.PageIndex - 1); i <= Math.Min(Model.TotalPages, Model.PageIndex + 1); i++)
                     {
                         if (Model.PageIndex == i)
                         {
@@ -79,16 +80,17 @@
                             <li class="page-item"><a class="page-link" asp-route-page="@i">@i</a></li>
                         }
                     }
-                    @if (Model.PageIndex == Model.TotalPages)
+
+                    @if (Model.PageIndex < Model.TotalPages)
                     {
-                        <li class="page-item disabled">
-                            <span class="page-link">Next</span>
+                        <li class="page-item">
+                            <a class="page-link" asp-route-page="@(Model.PageIndex+1)">Next</a>
                         </li>
                     }
                     else
                     {
-                        <li class="page-item">
-                            <a class="page-link" asp-route-page="@(Model.PageIndex+1)">Next</a>
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
                         </li>
                     }
                 </ul>
