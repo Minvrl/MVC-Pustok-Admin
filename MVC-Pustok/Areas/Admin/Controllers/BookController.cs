@@ -28,23 +28,32 @@ namespace MVC_Pustok.Areas.Admin.Controllers
 
         public IActionResult Delete(int id)
         {
-            Book existBook = _context.Books.Find(id);
-            if (existBook == null) return NotFound();
+            Book book = _context.Books.Include(x => x.BookImages).Include(x => x.BookTags).ThenInclude(bt => bt.Tag).Include(x => x.Author).Include(x => x.Genre).FirstOrDefault(x => x.Id == id);
+            if (book == null) return RedirectToAction("notfound", "error");
 
-            _context.Books.Remove(existBook);
+            return View(book);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Book book)
+        {
+            Book existingBook = _context.Books.FirstOrDefault(x => x.Id == book.Id );
+            if (book == null) return RedirectToAction("notfound", "error");
+
+            existingBook.ModifiedAt = DateTime.UtcNow;
+            _context.Books.Remove(existingBook);
             _context.SaveChanges();
 
-            return Ok();
+            return RedirectToAction("index");
         }
+        //public IActionResult DeleteImg(int id)
+        //{
+        //    BookImgs existImg = _context.BookImages.Find(id);
+        //    if (existImg == null) return NotFound();
 
-        public IActionResult DeleteImg(int id)
-        {
-            BookImgs existImg = _context.BookImages.Find(id);
-            if (existImg == null) return NotFound();
-
-            FileManager.Delete(_env.WebRootPath, "uploads/slider", existImg.Name);
-            return Ok();
-        }
+        //    FileManager.Delete(_env.WebRootPath, "uploads/slider", existImg.Name);
+        //    return Ok();
+        //}
 
 
         public IActionResult Create()
@@ -209,9 +218,6 @@ namespace MVC_Pustok.Areas.Admin.Controllers
 
             return RedirectToAction("index");
         }
-
-
-
 
     }
 }

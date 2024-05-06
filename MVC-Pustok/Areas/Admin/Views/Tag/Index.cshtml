@@ -1,4 +1,4 @@
-﻿@model PaginatedList<Book>
+﻿@model PaginatedList<Tag>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,7 +10,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Books</h1>
+        <h1 class="h3 mb-0 text-gray-800">Tags</h1>
         <a asp-action="create" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             Create
         </a>
@@ -22,12 +22,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Author</th>
-                        <th scope="col">Genre</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Cost Price</th>
-                        <th scope="col">Discount</th>
-                        <th scope="col">Image</th>
+                        <th scope="col">Element count</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -37,18 +32,11 @@
                         <tr>
                             <th scope="row">@(++order)</th>
                             <td>@item.Name</td>
-                            <td>@item.Author.Fullname</td>
-                            <td>@item.Genre.Name</td>
-                            <td>@item.SalePrice.ToString("0.00")</td>
-                            <td>@item.CostPrice.ToString("0.00")</td>
-                            <td>@item.DiscountPerc.ToString("0.##")</td>
-
-                            <td>
-                                <img width="150" src="~/uploads/book/@item.BookImages.FirstOrDefault()?.Name" alt="@item.Name" />
-                            </td>
+                            <td>@item.Tags.Count</td>
                             <td>
                                 <a class="btn btn-warning" asp-action="edit" asp-route-id="@item.Id">Edit</a>
-                                <a class="btn btn-danger" asp-action="delete" asp-route-id="@item.Id">Delete</a>
+                                <a class="btn btn-danger delete-btn" asp-action="delete" asp-route-id="@item.Id">Delete</a>
+
                             </td>
                         </tr>
                     }
@@ -104,8 +92,6 @@
     </div>
 
 </div>
-
-
 @section scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 }

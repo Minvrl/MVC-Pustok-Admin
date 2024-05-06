@@ -25,7 +25,6 @@ $(document).ready(function () {
 
 
     $(".remove-img-icon").click(function () {
-        console.log("bleee")
         $(this).parent().remove();
     })
     $(".delete-btn").click(function (e) {
